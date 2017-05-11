@@ -21,6 +21,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.samaras.muvi.Backend.ClientHTTP;
+import com.samaras.muvi.Backend.MovieList;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -74,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+
 
     }
 }
