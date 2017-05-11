@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.samaras.muvi.LoginActivity">
 
+<<<<<<< HEAD
     <TextView
         android:id="@+id/textview"
         android:layout_width="wrap_content"
@@ -21,5 +23,47 @@
         tools:layout_constraintLeft_creator="1" />
 
 
+=======
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="username"
+        android:inputType="textPersonName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+>>>>>>> ae15752815ee4e74d9e3428b9e6fd3cd0df3d8e1
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/buttonLogIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_above="@+id/buttonCreateUser"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="17dp" />
+
+    <Button
+        android:id="@+id/buttonCreateUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SingUp"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/buttonLogIn"
+        android:layout_alignStart="@+id/buttonLogIn" />
+
+    <EditText
+        android:id="@+id/editTextParola"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonLogIn"
+        android:layout_alignLeft="@+id/editTextEmail"
+        android:layout_alignStart="@+id/editTextEmail"
+        android:layout_marginBottom="23dp"
+        android:ems="10"
+        android:hint="password"
+        android:inputType="textPassword" />
+
+</RelativeLayout>

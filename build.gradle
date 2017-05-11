@@ -5,7 +5,12 @@ buildscript {
         jcenter()
     }
     dependencies {
+<<<<<<< HEAD
         classpath 'com.android.tools.build:gradle:2.3.2'
+=======
+        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.google.gms:google-services:3.0.0'
+>>>>>>> ae15752815ee4e74d9e3428b9e6fd3cd0df3d8e1
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -15,6 +20,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
 }
 
