@@ -30,11 +30,8 @@ import java.util.HashMap;
  */
 
 public class MainActivity extends AppCompatActivity {
-    private String TAG = MainActivity.class.getSimpleName();
-
     private ProgressDialog pDialog;
     private ListView lv;
-
 
     ArrayList<HashMap<String, String>> movieInfos;
 
@@ -69,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Loading...");
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
 
         @Override
@@ -130,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
                     MovieList.movies.get(i).printMovie();
 
                 ListAdapter adapter = new SimpleAdapter(MainActivity.this, movieInfos, R.layout.list_item, new String[]{"title", "description", "rating"}, new int[]{R.id.title, R.id.description, R.id.rating});
+                if(pDialog.isShowing())
+                    pDialog.dismiss();
                 lv.setAdapter(adapter);
             } catch (Exception e) {
                 e.printStackTrace();
