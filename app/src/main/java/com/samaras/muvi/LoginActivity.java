@@ -19,17 +19,43 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.samaras.muvi.Backend.ClientHTTP;
-import com.samaras.muvi.Backend.MovieList;
-
-import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "EmailPassword";
     private FirebaseAuth mAuth;
     DatabaseReference rf = FirebaseDatabase.getInstance().getReference("users");
+
+    private void signIn(String email, String password) {
+        Log.d(TAG, "signIn:" + email);
+
+        // [START sign_in_with_email]
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            Toast.makeText(getApplicationContext(), "Authentication succesfull.",
+                                    Toast.LENGTH_SHORT).show();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // [END_EXCLUDE]
+                    }
+                });
+        // [END sign_in_with_email]
+    }
 
 
     @Override
@@ -45,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Button buttonCr = (Button) findViewById(R.id.buttonCreateUser);
         Button buttonLg = (Button) findViewById(R.id.buttonLogIn);
-
 
         buttonCr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,13 +94,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String stringEmail = email.getText().toString();
                 String stringParola = parola.getText().toString();
-                mAuth.signInWithEmailAndPassword(stringEmail, stringParola).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        Toast.makeText(getApplicationContext(), "te-ai logat",
-//                                Toast.LENGTH_LONG).show();
-                    }
-                });
+
+                signIn(stringEmail, stringParola);
             }
         });
 
