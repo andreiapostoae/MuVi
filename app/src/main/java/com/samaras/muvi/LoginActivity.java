@@ -1,17 +1,6 @@
 package com.samaras.muvi;
 
-<<<<<<< HEAD
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
-import com.samaras.muvi.Backend.ClientHTTP;
-import com.samaras.muvi.Backend.JSONAsyncTask;
-import com.samaras.muvi.Backend.MovieList;
-
-import java.util.ArrayList;
-
-public class LoginActivity extends AppCompatActivity {
-=======
 import android.icu.lang.UProperty;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -38,20 +27,13 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     DatabaseReference rf = FirebaseDatabase.getInstance().getReference("users");
 
->>>>>>> ae15752815ee4e74d9e3428b9e6fd3cd0df3d8e1
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-<<<<<<< HEAD
-        MovieList.movies = new ArrayList<>();
-        String URL = ClientHTTP.createURL("/movie/now_playing");
-
-        (new JSONAsyncTask(URL, findViewById(android.R.id.content))).execute();
 
 
-
-=======
         mAuth = FirebaseAuth.getInstance();
 
         final EditText email = (EditText) findViewById(R.id.editTextEmail);
@@ -59,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Button buttonCr = (Button) findViewById(R.id.buttonCreateUser);
         Button buttonLg = (Button) findViewById(R.id.buttonLogIn);
->>>>>>> ae15752815ee4e74d9e3428b9e6fd3cd0df3d8e1
 
 
         buttonCr.setOnClickListener(new View.OnClickListener() {
