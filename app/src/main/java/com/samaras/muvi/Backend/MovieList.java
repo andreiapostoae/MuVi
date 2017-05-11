@@ -8,4 +8,6 @@ import java.util.ArrayList;
 
 public class MovieList {
     public static ArrayList<MovieInfo> movies;
+
+    public MovieList() {}
 }

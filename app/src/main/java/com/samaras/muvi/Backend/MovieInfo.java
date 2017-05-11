@@ -1,7 +1,5 @@
 package com.samaras.muvi.Backend;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 /**
@@ -15,14 +13,27 @@ public class MovieInfo {
     double popularityScore;
     double rating;
     String posterPath;
-    JSONObject jsonObject;
+    int id;
+    String releaseDate;
 
-    public MovieInfo(JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
+    public MovieInfo(int id, String title, String description, ArrayList<Integer> genres, double popularityScore, double rating, String posterPath, String releaseDate) {
+        this.id = id;
+        this.posterPath = posterPath;
+        this.popularityScore = popularityScore;
+        this.rating = rating;
+        this.title = title;
+        this.description = description;
+        this.genres = genres;
+        this.releaseDate = releaseDate;
     }
 
-    public String toString() {
-        return jsonObject.toString();
+    public void printMovie() {
+        System.out.println("------------------------");
+        System.out.println("title: " + title);
+        System.out.println("description: " + description);
+        System.out.println("genres: " + genres);
+        System.out.println("rating: " + rating);
     }
+
 
 }
