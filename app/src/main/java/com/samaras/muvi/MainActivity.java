@@ -1,15 +1,16 @@
 package com.samaras.muvi;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.samaras.muvi.Backend.ClientHTTP;
+import com.samaras.muvi.Backend.CustomList;
 import com.samaras.muvi.Backend.MovieInfo;
 import com.samaras.muvi.Backend.MovieList;
 
@@ -56,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
         String URL_STRING;
         JSONObject jsonObject;
         View view;
+        Bitmap[] images;
+        String[] titles;
+        String[] ratings;
+        String[] descriptions;
+        int current_index = 0;
 
 
         public JSONAsyncTask(String URL, View view) {
@@ -103,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 jsonObject = new JSONObject(result);
                 JSONArray movies = jsonObject.getJSONArray("results");
+                titles = new String[movies.length()];
+                images = new Bitmap[movies.length()];
+                descriptions = new String[movies.length()];
+                ratings = new String[movies.length()];
                 for (int i = 0; i < movies.length(); i++) {
                     JSONObject obj = movies.getJSONObject(i);
                     String title = obj.getString("original_title");
@@ -119,26 +129,69 @@ public class MainActivity extends AppCompatActivity {
                         genres.add(genre_id);
                     }
                     MovieList.movies.add(new MovieInfo(id, title, description, genres, popularity, rating, path_to_jpg, release_date));
+                    String photoURLString = ClientHTTP.createPhotoURL(path_to_jpg, 185);
+                    System.out.println(photoURLString);
+
+
 
                     HashMap<String, String> movieInfo = new HashMap<>();
                     movieInfo.put("title", title);
                     movieInfo.put("description", description);
-                    movieInfo.put("rating", Double.toString(rating));
+                    movieInfo.put("rating", "Average rating: " + Double.toString(rating));
                     movieInfos.add(movieInfo);
+                    titles[i] = title;
+                    descriptions[i] = description;
+                    ratings[i] = "Average rating: " + Double.toString(rating);
+                    new ImageAsync(photoURLString).execute();
                 }
 
                 for (int i = 0; i < MovieList.movies.size(); i++)
                     MovieList.movies.get(i).printMovie();
 
-                ListAdapter adapter = new SimpleAdapter(MainActivity.this, movieInfos, R.layout.list_item, new String[]{"title", "description", "rating"}, new int[]{R.id.title, R.id.description, R.id.rating});
-                if(pDialog.isShowing())
-                    pDialog.dismiss();
-                lv.setAdapter(adapter);
+                //ListAdapter adapter = new SimpleAdapter(MainActivity.this, movieInfos, R.layout.list_item, new String[]{"title", "description", "rating"}, new int[]{R.id.title, R.id.description, R.id.rating});
+
+               // lv.setAdapter(adapter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
+        public class ImageAsync extends AsyncTask<String, Void, Bitmap> {
+            String photoURLString;
+
+            public ImageAsync(String photoURLString) {
+                this.photoURLString = photoURLString;
+            }
+
+            @Override
+            protected Bitmap doInBackground(String... urls) {
+                try {
+                    java.net.URL photoURL = new java.net.URL(photoURLString);
+                    HttpURLConnection connection = (HttpURLConnection) photoURL
+                            .openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                    return myBitmap;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap result) {
+                images[current_index] = result;
+                current_index++;
+
+                if(pDialog.isShowing())
+                    pDialog.dismiss();
+                CustomList adapter = new CustomList(MainActivity.this, titles, images, descriptions, ratings);
+                lv.setAdapter(adapter);
+            }
+
+        }
     }
 
 }
