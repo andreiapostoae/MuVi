@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     String[] ratings;
     String[] descriptions;
     String[] genres;
+    String[] original_descriptions;
     int current_index = 0;
 
 
@@ -308,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 descriptions = new String[movies.length()];
                 ratings = new String[movies.length()];
                 genres = new String[movies.length()];
+                original_descriptions = new String[movies.length()];
 
                 for (int i = 0; i < movies.length(); i++) {
                     JSONObject obj = movies.getJSONObject(i);
@@ -336,6 +338,8 @@ public class MainActivity extends AppCompatActivity {
                     movieInfo.put("rating", "Average rating: " + Double.toString(rating));
                     movieInfos.add(movieInfo);
                     titles[i] = title;
+
+                    original_descriptions[i] = new String(description);
 
                     int description_length = description.length();
                     int stop_index = 170;
@@ -373,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> av, View v, int i, long l) {
                         new MaterialDialog.Builder(v.getContext())
                                 .title(titles[i])
-                                .content(descriptions[i])
+                                .content(original_descriptions[i])
                                 .negativeText("Close")
                                 .positiveText("Add to watchlist")
                                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -382,6 +386,7 @@ public class MainActivity extends AppCompatActivity {
                                         dialog.dismiss();
                                     }
                                 })
+                                .negativeColor(getResources().getColor(R.color.md_red_700))
                                 .show();
                     }
 
