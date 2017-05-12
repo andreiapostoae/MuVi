@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.Drawer;
@@ -42,10 +43,17 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ListView lv;
     MovieList movieList;
+    TextView tv;
 
     ArrayList<HashMap<String, String>> movieInfos;
 
     Drawer result;
+    Bitmap[] images;
+    String[] titles;
+    String[] ratings;
+    String[] descriptions;
+    String[] genres;
+    int current_index = 0;
 
 
     @Override
@@ -61,44 +69,71 @@ public class MainActivity extends AppCompatActivity {
 
         lv = (ListView) findViewById(R.id.list);
 
-//        new DrawerBuilder().withActivity(this).build();
-//        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Trending");
-//        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Find me a movie");
-//
-////create the drawer and remember the `Drawer` result object
-//        Drawer result = new DrawerBuilder()
-//                .withActivity(this)
-//                .addDrawerItems(
-//                        item1,
-//                        new DividerDrawerItem(),
-//                        item2,
-//                        new SecondaryDrawerItem().withName("Logout")
-//                )
-//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-//                    @Override
-//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//                        // do something with the clicked item :D
-//                        System.out.println("ASDSA");
-//                        finish();
-//                        return true;
-//                    }
-//                })
-//                .build();
-//
+        tv = (TextView)findViewById(R.id.categoryTitle);
+
+
         PrimaryDrawerItem trendingItem = new PrimaryDrawerItem().withIdentifier(1).withName("Trending")
-                .withIcon(GoogleMaterial.Icon.gmd_trending_up);
+                .withIcon(GoogleMaterial.Icon.gmd_trending_up)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        (new JSONAsyncTask(ClientHTTP.createURL("/movie/now_playing"), null)).execute();
+                        tv.setText("Trending");
+                        return false;
+                    }
+                });
         PrimaryDrawerItem topRatedItem = new PrimaryDrawerItem().withIdentifier(2).withName("Top Rated")
-                .withIcon(GoogleMaterial.Icon.gmd_assessment);
+                .withIcon(GoogleMaterial.Icon.gmd_assessment)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        new JSONAsyncTask(ClientHTTP.createURL("/movie/top_rated"), null).execute();
+                        tv.setText("Top Rated");
+                        return false;
+                    }
+                });
 
         List<IDrawerItem> categorySubitems = new ArrayList<>();
         SecondaryDrawerItem catAction = new SecondaryDrawerItem().withIdentifier(3).withName("Action").withLevel(2)
-                .withIcon(GoogleMaterial.Icon.gmd_flash_on);
+                .withIcon(GoogleMaterial.Icon.gmd_flash_on)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        new JSONAsyncTask(ClientHTTP.createURL("/genre/28/movies"), null).execute();
+                        tv.setText("Action");
+                        return false;
+                    }
+                });
         SecondaryDrawerItem catComedy = new SecondaryDrawerItem().withIdentifier(4).withName("Comedy").withLevel(2)
-                .withIcon(GoogleMaterial.Icon.gmd_mood);
+                .withIcon(GoogleMaterial.Icon.gmd_mood)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        new JSONAsyncTask(ClientHTTP.createURL("/genre/35/movies"), null).execute();
+                        tv.setText("Comedy");
+                        return false;
+                    }
+                });;
         SecondaryDrawerItem catThriller = new SecondaryDrawerItem().withIdentifier(5).withName("Thriller").withLevel(2)
-                .withIcon(GoogleMaterial.Icon.gmd_gesture);
+                .withIcon(GoogleMaterial.Icon.gmd_gesture)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        new JSONAsyncTask(ClientHTTP.createURL("/genre/53/movies"), null).execute();
+                        tv.setText("Thriller");
+                        return false;
+                    }
+                });;
         SecondaryDrawerItem catHorror = new SecondaryDrawerItem().withIdentifier(6).withName("Horror").withLevel(2)
-                .withIcon(GoogleMaterial.Icon.gmd_bug_report);
+                .withIcon(GoogleMaterial.Icon.gmd_bug_report)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        new JSONAsyncTask(ClientHTTP.createURL("/genre/27/movies"), null).execute();
+                        tv.setText("Horror");
+                        return false;
+                    }
+                });
         categorySubitems.add(catAction);
         categorySubitems.add(catComedy);
         categorySubitems.add(catThriller);
@@ -132,8 +167,26 @@ public class MainActivity extends AppCompatActivity {
                         logoutItem)
                 .build();
 
+
+
         (new JSONAsyncTask(ClientHTTP.createURL("/movie/now_playing"), null)).execute();
+        tv.setText("Trending");
+
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        pDialog.dismiss();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pDialog.dismiss();
+    }
+
+
 
 
     public class JSONAsyncTask extends AsyncTask<String, Void, String> {
@@ -141,17 +194,13 @@ public class MainActivity extends AppCompatActivity {
         String URL_STRING;
         JSONObject jsonObject;
         View view;
-        Bitmap[] images;
-        String[] titles;
-        String[] ratings;
-        String[] descriptions;
-        String[] genres;
-        int current_index = 0;
+
 
 
         public JSONAsyncTask(String URL, View view) {
             this.URL_STRING = URL;
             this.view = view;
+            current_index = 0;
         }
 
         @Override
