@@ -7,10 +7,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import android.widget.Button;
+import android.widget.EditText;
+
 import android.widget.AdapterView;
+
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
     TextView tv;
     Context context;
 
+    ConstraintLayout searchbox;
+    Button searchButton;
+    EditText searchTerm;
+
     ArrayList<HashMap<String, String>> movieInfos;
 
     Drawer result;
@@ -78,7 +90,21 @@ public class MainActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.list);
 
         tv = (TextView)findViewById(R.id.categoryTitle);
+        searchbox = (ConstraintLayout) findViewById(R.id.searchbox);
+        searchButton = (Button) findViewById(R.id.searchButton);
+        searchTerm = (EditText) findViewById(R.id.searchTerm);
 
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String term = searchTerm.getText().toString();
+                String url = ClientHTTP.createURL("/search/movie") + "&query=\"" + term + "\"";
+                new JSONAsyncTask(url, null).execute();
+                tv.setText("Search results for: " + term);
+                lv.setVisibility(View.VISIBLE);
+                searchbox.setVisibility(View.INVISIBLE);
+            }
+        });
 
         PrimaryDrawerItem trendingItem = new PrimaryDrawerItem().withIdentifier(1).withName("Trending")
                 .withIcon(GoogleMaterial.Icon.gmd_trending_up)
@@ -87,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         (new JSONAsyncTask(ClientHTTP.createURL("/movie/now_playing"), null)).execute();
                         tv.setText("Trending");
+                        lv.setVisibility(View.VISIBLE);
+                        searchbox.setVisibility(View.INVISIBLE);
                         return false;
                     }
                 });
@@ -97,6 +125,19 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         new JSONAsyncTask(ClientHTTP.createURL("/movie/top_rated"), null).execute();
                         tv.setText("Top Rated");
+                        lv.setVisibility(View.VISIBLE);
+                        searchbox.setVisibility(View.INVISIBLE);
+                        return false;
+                    }
+                });
+        PrimaryDrawerItem searchItem = new PrimaryDrawerItem().withIdentifier(10).withName("Search")
+                .withIcon(GoogleMaterial.Icon.gmd_search)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        tv.setText("Search");
+                        lv.setVisibility(View.INVISIBLE);
+                        searchbox.setVisibility(View.VISIBLE);
                         return false;
                     }
                 });
@@ -109,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         new JSONAsyncTask(ClientHTTP.createURL("/genre/28/movies"), null).execute();
                         tv.setText("Action");
+                        lv.setVisibility(View.VISIBLE);
+                        searchbox.setVisibility(View.INVISIBLE);
                         return false;
                     }
                 });
@@ -119,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         new JSONAsyncTask(ClientHTTP.createURL("/genre/35/movies"), null).execute();
                         tv.setText("Comedy");
+                        lv.setVisibility(View.VISIBLE);
+                        searchbox.setVisibility(View.INVISIBLE);
                         return false;
                     }
                 });;
@@ -129,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         new JSONAsyncTask(ClientHTTP.createURL("/genre/53/movies"), null).execute();
                         tv.setText("Thriller");
+                        lv.setVisibility(View.VISIBLE);
+                        searchbox.setVisibility(View.INVISIBLE);
                         return false;
                     }
                 });;
@@ -139,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         new JSONAsyncTask(ClientHTTP.createURL("/genre/27/movies"), null).execute();
                         tv.setText("Horror");
+                        lv.setVisibility(View.VISIBLE);
+                        searchbox.setVisibility(View.INVISIBLE);
                         return false;
                     }
                 });
@@ -159,6 +208,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         finish();
+                        lv.setVisibility(View.VISIBLE);
+                        searchbox.setVisibility(View.INVISIBLE);
                         // TODO: add firebase logout
                         return false;
                     }
@@ -170,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
                         trendingItem,
                         topRatedItem,
                         categoriesItem,
+                        searchItem,
                         new DividerDrawerItem(),
                         settingsItem,
                         logoutItem)
