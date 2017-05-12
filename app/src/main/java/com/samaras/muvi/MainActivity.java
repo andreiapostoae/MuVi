@@ -25,12 +25,16 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.samaras.muvi.Backend.ClientHTTP;
 import com.samaras.muvi.Backend.CustomList;
 import com.samaras.muvi.Backend.MovieInfo;
@@ -216,6 +220,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        System.out.println("email: " + LoginActivity.e_mail);
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withSelectionListEnabledForSingleProfile(false)
+                .withHeaderBackground(R.color.md_red_700)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Apo Magnificul").withEmail(LoginActivity.e_mail).withIcon(getResources().getDrawable(R.drawable.apo))
+                )
+                .build();
+
         result = new DrawerBuilder()
                 .withActivity(this)
                 .addDrawerItems(
@@ -226,8 +240,9 @@ public class MainActivity extends AppCompatActivity {
                         new DividerDrawerItem(),
                         settingsItem,
                         logoutItem)
-                .build();
+                .withAccountHeader(headerResult)
 
+                .build();
 
 
         (new JSONAsyncTask(ClientHTTP.createURL("/movie/now_playing"), null)).execute();

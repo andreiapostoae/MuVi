@@ -36,8 +36,10 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
     private FirebaseAuth mAuth;
     DatabaseReference rf = FirebaseDatabase.getInstance().getReference("users");
+    public static String e_mail;
 
     private void signIn(String email, String password) {
+        e_mail = new String(email);
         Log.d(TAG, "signIn:" + email);
 
         // [START sign_in_with_email]
