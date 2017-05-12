@@ -179,13 +179,13 @@ public class MainActivity extends AppCompatActivity {
                     titles[i] = title;
 
                     int description_length = description.length();
-                    int stop_index = 100;
-                    if(description_length >= 120)
-                        for(int j = 100; j < 120; j++)
+                    int stop_index = 170;
+                    if(description_length >= 170)
+                        for(int j = 150; j < 170; j++)
                             if(description.charAt(j) == ' ' || description.charAt(j) == '.')
                                 stop_index = j;
-                    
-                    if(description_length > 50)
+
+                    if(description_length > 170)
                         description = description.substring(0, stop_index);
                     descriptions[i] = description + " [...]";
 
