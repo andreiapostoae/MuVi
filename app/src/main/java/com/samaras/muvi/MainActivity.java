@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.Drawer;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ListView lv;
     MovieList movieList;
+    TextView tv;
 
     ArrayList<HashMap<String, String>> movieInfos;
 
@@ -67,30 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
         lv = (ListView) findViewById(R.id.list);
 
-//        new DrawerBuilder().withActivity(this).build();
-//        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Trending");
-//        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Find me a movie");
-//
-////create the drawer and remember the `Drawer` result object
-//        Drawer result = new DrawerBuilder()
-//                .withActivity(this)
-//                .addDrawerItems(
-//                        item1,
-//                        new DividerDrawerItem(),
-//                        item2,
-//                        new SecondaryDrawerItem().withName("Logout")
-//                )
-//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-//                    @Override
-//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//                        // do something with the clicked item :D
-//                        System.out.println("ASDSA");
-//                        finish();
-//                        return true;
-//                    }
-//                })
-//                .build();
-//
+        tv = (TextView)findViewById(R.id.categoryTitle);
+
 
         PrimaryDrawerItem trendingItem = new PrimaryDrawerItem().withIdentifier(1).withName("Trending")
                 .withIcon(GoogleMaterial.Icon.gmd_trending_up)
@@ -98,11 +78,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         (new JSONAsyncTask(ClientHTTP.createURL("/movie/now_playing"), null)).execute();
+                        tv.setText("Trending");
                         return false;
                     }
-                });;
+                });
         PrimaryDrawerItem topRatedItem = new PrimaryDrawerItem().withIdentifier(2).withName("Top Rated")
-                .withIcon(GoogleMaterial.Icon.gmd_assessment);
+                .withIcon(GoogleMaterial.Icon.gmd_assessment)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        new JSONAsyncTask(ClientHTTP.createURL("/movie/top_rated"), null).execute();
+                        tv.setText("Top Rated");
+                        return false;
+                    }
+                });
 
         List<IDrawerItem> categorySubitems = new ArrayList<>();
         SecondaryDrawerItem catAction = new SecondaryDrawerItem().withIdentifier(3).withName("Action").withLevel(2)
@@ -111,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         new JSONAsyncTask(ClientHTTP.createURL("/genre/28/movies"), null).execute();
+                        tv.setText("Action");
                         return false;
                     }
                 });
@@ -120,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         new JSONAsyncTask(ClientHTTP.createURL("/genre/35/movies"), null).execute();
+                        tv.setText("Comedy");
                         return false;
                     }
                 });;
@@ -129,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         new JSONAsyncTask(ClientHTTP.createURL("/genre/53/movies"), null).execute();
+                        tv.setText("Thriller");
                         return false;
                     }
                 });;
@@ -138,9 +130,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         new JSONAsyncTask(ClientHTTP.createURL("/genre/27/movies"), null).execute();
+                        tv.setText("Horror");
                         return false;
                     }
-                });;
+                });
         categorySubitems.add(catAction);
         categorySubitems.add(catComedy);
         categorySubitems.add(catThriller);
@@ -177,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         (new JSONAsyncTask(ClientHTTP.createURL("/movie/now_playing"), null)).execute();
+        tv.setText("Trending");
 
     }
 
