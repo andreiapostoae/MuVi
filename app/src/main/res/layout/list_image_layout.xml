@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="2dp"
         app:layout_constraintLeft_toRightOf="@+id/img"
-        android:layout_marginLeft="2dp" />
+        android:layout_marginLeft="0dp" />
 
     <TextView
         android:id="@+id/rating"
