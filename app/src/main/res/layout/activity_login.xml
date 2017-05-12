@@ -45,7 +45,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteY="8dp"
+        android:id="@+id/constraintLayout">
 
     </android.support.constraint.ConstraintLayout>
 
@@ -57,13 +58,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="75dp"
         android:layout_marginTop="70dp"
-        android:cursorVisible="false"
+        android:cursorVisible="true"
         android:ems="10"
         android:fadeScrollbars="false"
         android:hint="Username"
         android:inputType="textPersonName"
-        android:textColor="#F4511E"
-        android:textColorHint="#F4511E"
+        android:textColor="#E64A19"
+        android:textColorHint="#E64A19"
         android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -71,16 +72,20 @@
 
     <Button
         android:id="@+id/buttonLogIn"
-        style="@android:style/Widget.DeviceDefault.Light.Button.Inset"
+        style="@style/FirebaseUI.Button.AccountChooser.EmailButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonCreateUser"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="148dp"
-        android:layout_marginTop="187dp"
+        android:layout_marginLeft="223dp"
+        android:layout_marginRight="50dp"
+        android:drawableLeft="@drawable/ic_person"
+        android:gravity="left|center_vertical"
         android:text="Login"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="235dp" />
+
 
     <Button
         android:id="@+id/buttonCreateUser"
@@ -89,11 +94,12 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="136dp"
-        android:layout_marginTop="259dp"
-        android:text="SignUp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="235dp"
+        android:text="Sign Up"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <EditText
         android:id="@+id/editTextParola"
@@ -107,8 +113,8 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:textColor="#F4511E"
-        android:textColorHint="#F4511E"
+        android:textColor="#E64A19"
+        android:textColorHint="#E64A19"
         android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
