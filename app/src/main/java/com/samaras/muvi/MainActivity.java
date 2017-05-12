@@ -65,13 +65,14 @@ public class MainActivity extends AppCompatActivity {
                         item1,
                         new DividerDrawerItem(),
                         item2,
-                        new SecondaryDrawerItem().withName("Settings")
+                        new SecondaryDrawerItem().withName("Logout")
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
                         System.out.println("ASDSA");
+                        finish();
                         return true;
                     }
                 })
