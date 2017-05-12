@@ -39,6 +39,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ListView lv;
+    MovieList movieList;
 
     ArrayList<HashMap<String, String>> movieInfos;
 
@@ -48,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Utils.setupUI(findViewById(R.id.parent), this);
 
-        MovieList.movies = new ArrayList<>();
-
+        //MovieList.movies = new ArrayList<>();
+        movieList = new MovieList();
 
         movieInfos = new ArrayList<>();
 
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         String[] titles;
         String[] ratings;
         String[] descriptions;
+        String[] genres;
         int current_index = 0;
 
 
@@ -146,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
                 images = new Bitmap[movies.length()];
                 descriptions = new String[movies.length()];
                 ratings = new String[movies.length()];
+                genres = new String[movies.length()];
+
                 for (int i = 0; i < movies.length(); i++) {
                     JSONObject obj = movies.getJSONObject(i);
                     String title = obj.getString("original_title");
@@ -155,14 +159,14 @@ public class MainActivity extends AppCompatActivity {
                     Double popularity = obj.getDouble("popularity");
                     String path_to_jpg = obj.getString("poster_path");
                     Integer id = obj.getInt("id");
-                    ArrayList<Integer> genres = new ArrayList<>();
+                    //ArrayList<Integer> genres = new ArrayList<>();
                     JSONArray genre_ids = obj.getJSONArray("genre_ids");
-                    for (int j = 0; j < genre_ids.length(); j++) {
-                        int genre_id = genre_ids.getInt(j);
-                        genres.add(genre_id);
-                    }
-                    MovieList.movies.add(new MovieInfo(id, title, description, genres, popularity, rating, path_to_jpg, release_date));
-                    String photoURLString = ClientHTTP.createPhotoURL(path_to_jpg, 185);
+                    //for (int j = 0; j < genre_ids.length(); j++) {
+                    //    int genre_id = genre_ids.getInt(j);
+                     //   genres.add(genre_id);
+                    //}
+                    MovieList.movies.add(new MovieInfo(id, title, description, popularity, rating, path_to_jpg, release_date));
+                    String photoURLString = ClientHTTP.createPhotoURL(path_to_jpg);
                     System.out.println(photoURLString);
 
 
@@ -173,17 +177,34 @@ public class MainActivity extends AppCompatActivity {
                     movieInfo.put("rating", "Average rating: " + Double.toString(rating));
                     movieInfos.add(movieInfo);
                     titles[i] = title;
-                    descriptions[i] = description;
-                    ratings[i] = "Average rating: " + Double.toString(rating);
+
+                    int description_length = description.length();
+                    int stop_index = 100;
+                    if(description_length >= 120)
+                        for(int j = 100; j < 120; j++)
+                            if(description.charAt(j) == ' ' || description.charAt(j) == '.')
+                                stop_index = j;
+                    
+                    if(description_length > 50)
+                        description = description.substring(0, stop_index);
+                    descriptions[i] = description + " [...]";
+
+
+                    ratings[i] = "Rating: " + Double.toString(rating);
+                    genres[i] = "";
+                    for (int j = 0; j < Math.min(genre_ids.length(), 3); j++) {
+                        genres[i] += movieList.getGenre(genre_ids.getInt(j));
+                        if (j != Math.min(genre_ids.length(), 3) - 1)
+                            genres[i] += ", ";
+                    }
+
                     new ImageAsync(photoURLString).execute();
                 }
 
                 for (int i = 0; i < MovieList.movies.size(); i++)
                     MovieList.movies.get(i).printMovie();
 
-                //ListAdapter adapter = new SimpleAdapter(MainActivity.this, movieInfos, R.layout.list_item, new String[]{"title", "description", "rating"}, new int[]{R.id.title, R.id.description, R.id.rating});
 
-               // lv.setAdapter(adapter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -220,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(pDialog.isShowing())
                     pDialog.dismiss();
-                CustomList adapter = new CustomList(MainActivity.this, titles, images, descriptions, ratings);
+                CustomList adapter = new CustomList(MainActivity.this, titles, images, descriptions, ratings, genres);
                 lv.setAdapter(adapter);
             }
 

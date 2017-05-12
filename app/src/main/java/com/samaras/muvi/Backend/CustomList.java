@@ -22,16 +22,17 @@ public class CustomList extends ArrayAdapter<String> {
     private final Bitmap[] imageId;
     private final String[] description;
     private final String[] rating;
+    private final String[] genres;
 
     public CustomList(Activity context,
-                      String[] web, Bitmap[] imageId, String[] description, String[] rating) {
+                      String[] web, Bitmap[] imageId, String[] description, String[] rating, String[] genres) {
         super(context, R.layout.list_image_layout, web);
         this.context = context;
         this.web = web;
         this.imageId = imageId;
         this.description = description;
         this.rating = rating;
-
+        this.genres = genres;
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
@@ -40,11 +41,13 @@ public class CustomList extends ArrayAdapter<String> {
         TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
         TextView txtDescription = (TextView) rowView.findViewById(R.id.description);
         TextView txtRating = (TextView) rowView.findViewById(R.id.rating);
+        TextView txtGenres = (TextView) rowView.findViewById(R.id.genres);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
         txtTitle.setText(web[position]);
         txtDescription.setText(description[position]);
         txtRating.setText(rating[position]);
+        txtGenres.setText(genres[position]);
 
         imageView.setImageBitmap(imageId[position]);
         return rowView;

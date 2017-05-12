@@ -16,14 +16,14 @@ public class MovieInfo {
     int id;
     String releaseDate;
 
-    public MovieInfo(int id, String title, String description, ArrayList<Integer> genres, double popularityScore, double rating, String posterPath, String releaseDate) {
+    public MovieInfo(int id, String title, String description, double popularityScore, double rating, String posterPath, String releaseDate) {
         this.id = id;
         this.posterPath = posterPath;
         this.popularityScore = popularityScore;
         this.rating = rating;
         this.title = title;
         this.description = description;
-        this.genres = genres;
+        //this.genres = genres;
         this.releaseDate = releaseDate;
     }
 
@@ -31,7 +31,7 @@ public class MovieInfo {
         System.out.println("------------------------");
         System.out.println("title: " + title);
         System.out.println("description: " + description);
-        System.out.println("genres: " + genres);
+        //System.out.println("genres: " + genres);
         System.out.println("rating: " + rating);
     }
 

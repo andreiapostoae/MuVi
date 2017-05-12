@@ -13,8 +13,8 @@ public class ClientHTTP {
         return baseLink + requestString + keyString + API_KEY;
     }
 
-    public static String createPhotoURL(String pathString, int width) {
-        return "http://image.tmdb.org/t/p/w" + Integer.toString(width)+"//" + pathString.substring(1);
+    public static String createPhotoURL(String pathString) {
+        return "http://image.tmdb.org/t/p/w185//" + pathString.substring(1);
     }
 
 
