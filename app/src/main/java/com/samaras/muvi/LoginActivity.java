@@ -51,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Authentication succesful.",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Intent switchIntent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(switchIntent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -61,8 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
         // [END sign_in_with_email]
-        Intent switchIntent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(switchIntent);
+
     }
 
 

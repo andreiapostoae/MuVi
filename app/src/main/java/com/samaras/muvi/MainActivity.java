@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -31,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Apo on 11-May-17.
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     MovieList movieList;
 
     ArrayList<HashMap<String, String>> movieInfos;
+
+    Drawer result;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,31 +61,76 @@ public class MainActivity extends AppCompatActivity {
 
         lv = (ListView) findViewById(R.id.list);
 
-        new DrawerBuilder().withActivity(this).build();
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Trending");
-        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Find me a movie");
+//        new DrawerBuilder().withActivity(this).build();
+//        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Trending");
+//        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Find me a movie");
+//
+////create the drawer and remember the `Drawer` result object
+//        Drawer result = new DrawerBuilder()
+//                .withActivity(this)
+//                .addDrawerItems(
+//                        item1,
+//                        new DividerDrawerItem(),
+//                        item2,
+//                        new SecondaryDrawerItem().withName("Logout")
+//                )
+//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+//                    @Override
+//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+//                        // do something with the clicked item :D
+//                        System.out.println("ASDSA");
+//                        finish();
+//                        return true;
+//                    }
+//                })
+//                .build();
+//
+        PrimaryDrawerItem trendingItem = new PrimaryDrawerItem().withIdentifier(1).withName("Trending")
+                .withIcon(GoogleMaterial.Icon.gmd_trending_up);
+        PrimaryDrawerItem topRatedItem = new PrimaryDrawerItem().withIdentifier(2).withName("Top Rated")
+                .withIcon(GoogleMaterial.Icon.gmd_assessment);
 
-//create the drawer and remember the `Drawer` result object
-        Drawer result = new DrawerBuilder()
-                .withActivity(this)
-                .addDrawerItems(
-                        item1,
-                        new DividerDrawerItem(),
-                        item2,
-                        new SecondaryDrawerItem().withName("Logout")
-                )
+        List<IDrawerItem> categorySubitems = new ArrayList<>();
+        SecondaryDrawerItem catAction = new SecondaryDrawerItem().withIdentifier(3).withName("Action").withLevel(2)
+                .withIcon(GoogleMaterial.Icon.gmd_flash_on);
+        SecondaryDrawerItem catComedy = new SecondaryDrawerItem().withIdentifier(4).withName("Comedy").withLevel(2)
+                .withIcon(GoogleMaterial.Icon.gmd_mood);
+        SecondaryDrawerItem catThriller = new SecondaryDrawerItem().withIdentifier(5).withName("Thriller").withLevel(2)
+                .withIcon(GoogleMaterial.Icon.gmd_gesture);
+        SecondaryDrawerItem catHorror = new SecondaryDrawerItem().withIdentifier(6).withName("Horror").withLevel(2)
+                .withIcon(GoogleMaterial.Icon.gmd_bug_report);
+        categorySubitems.add(catAction);
+        categorySubitems.add(catComedy);
+        categorySubitems.add(catThriller);
+        categorySubitems.add(catHorror);
+        PrimaryDrawerItem categoriesItem = new PrimaryDrawerItem().withIdentifier(7)
+                .withSubItems(categorySubitems).withName("Categories")
+                .withIcon(GoogleMaterial.Icon.gmd_list)
+                .withIcon(GoogleMaterial.Icon.gmd_arrow_drop_down);
+
+        PrimaryDrawerItem settingsItem = new PrimaryDrawerItem().withIdentifier(8).withName("Settings ¯\\_(ツ)_/¯")
+                .withIcon(GoogleMaterial.Icon.gmd_settings);
+        PrimaryDrawerItem logoutItem = new PrimaryDrawerItem().withIdentifier(9).withName("Logout")
+                .withIcon(GoogleMaterial.Icon.gmd_exit_to_app)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        // do something with the clicked item :D
-                        System.out.println("ASDSA");
                         finish();
-                        return true;
+                        // TODO: add firebase logout
+                        return false;
                     }
-                })
+                });
+
+        result = new DrawerBuilder()
+                .withActivity(this)
+                .addDrawerItems(
+                        trendingItem,
+                        topRatedItem,
+                        categoriesItem,
+                        new DividerDrawerItem(),
+                        settingsItem,
+                        logoutItem)
                 .build();
-
-
 
         (new JSONAsyncTask(ClientHTTP.createURL("/movie/now_playing"), null)).execute();
     }
