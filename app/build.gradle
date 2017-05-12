@@ -37,5 +37,9 @@ dependencies {
     compile 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar'
     compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.2@aar'
     testCompile 'junit:junit:4.12'
+    compile 'com.afollestad.material-dialogs:core:0.8.5.9'
+    compile ('com.afollestad.material-dialogs:commons:0.8.5.9'){
+        exclude module: 'core'
+    }
 }
 apply plugin: 'com.google.gms.google-services'

@@ -80,6 +80,24 @@ public class LoginActivity extends AppCompatActivity {
 
         Button buttonCr = (Button) findViewById(R.id.buttonCreateUser);
         Button buttonLg = (Button) findViewById(R.id.buttonLogIn);
+        Button buttonRp = (Button) findViewById(R.id.buttonResetPassword);
+
+        buttonRp.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                try {
+                    final String emailRequest = email.getText().toString();
+
+                    Toast.makeText(getApplicationContext(), "Reset password request sent to " + emailRequest,
+                            Toast.LENGTH_LONG).show();
+                    mAuth.sendPasswordResetEmail(emailRequest);
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Wrong email" ,
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         buttonCr.setOnClickListener(new View.OnClickListener() {
             @Override

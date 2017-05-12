@@ -1,6 +1,8 @@
 package com.samaras.muvi;
 
+import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -8,11 +10,16 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
 import android.widget.Button;
 import android.widget.EditText;
+
+import android.widget.AdapterView;
+
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -47,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView lv;
     MovieList movieList;
     TextView tv;
+    Context context;
 
     ConstraintLayout searchbox;
     Button searchButton;
@@ -67,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = getApplicationContext();
         //Utils.setupUI(findViewById(R.id.parent), this);
 
         //MovieList.movies = new ArrayList<>();
@@ -345,10 +354,25 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     new ImageAsync(photoURLString).execute();
+
                 }
 
                 for (int i = 0; i < MovieList.movies.size(); i++)
                     MovieList.movies.get(i).printMovie();
+
+
+
+                CustomList adapter = new CustomList(MainActivity.this, titles, images, descriptions, ratings, genres);
+                lv.setAdapter(adapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(AdapterView<?> av, View v, int i, long l) {
+                        new MaterialDialog.Builder(v.getContext())
+                                .title(titles[i])
+                                .show();
+                    }
+
+                });
 
 
             } catch (Exception e) {
@@ -387,8 +411,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(pDialog.isShowing())
                     pDialog.dismiss();
-                CustomList adapter = new CustomList(MainActivity.this, titles, images, descriptions, ratings, genres);
-                lv.setAdapter(adapter);
+
             }
 
         }
