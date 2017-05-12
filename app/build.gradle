@@ -30,6 +30,10 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:10.2.4'
     compile 'com.firebaseui:firebase-ui-database:1.2.0'
     compile 'com.firebaseui:firebase-ui-auth:1.2.0'
+    compile('com.mikepenz:materialdrawer:5.9.1@aar') {
+        transitive = true
+        exclude group: 'com.android.support'
+    }
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'
