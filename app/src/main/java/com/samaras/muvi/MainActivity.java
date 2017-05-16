@@ -363,9 +363,11 @@ public class MainActivity extends AppCompatActivity {
                             if(description.charAt(j) == ' ' || description.charAt(j) == '.')
                                 stop_index = j;
 
-                    if(description_length > 170)
+                    if(description_length > 170) {
                         description = description.substring(0, stop_index);
-                    descriptions[i] = description + " [...]";
+                        descriptions[i] = description + " [...]";
+                    } else
+                        descriptions[i] = description;
 
 
                     ratings[i] = "Rating: " + Double.toString(rating);
@@ -385,27 +387,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                CustomList adapter = new CustomList(MainActivity.this, titles, images, descriptions, ratings, genres);
-                lv.setAdapter(adapter);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-                    @Override
-                    public void onItemClick(AdapterView<?> av, View v, int i, long l) {
-                        new MaterialDialog.Builder(v.getContext())
-                                .title(titles[i])
-                                .content(original_descriptions[i])
-                                .negativeText("Close")
-                                .positiveText("Add to watchlist")
-                                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .negativeColor(getResources().getColor(R.color.md_red_700))
-                                .show();
-                    }
 
-                });
 
 
             } catch (Exception e) {
@@ -442,6 +424,28 @@ public class MainActivity extends AppCompatActivity {
                 images[current_index] = result;
                 current_index++;
 
+                CustomList adapter = new CustomList(MainActivity.this, titles, images, descriptions, ratings, genres);
+                lv.setAdapter(adapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(AdapterView<?> av, View v, int i, long l) {
+                        new MaterialDialog.Builder(v.getContext())
+                                .title(titles[i])
+                                .content(original_descriptions[i])
+                                .negativeText("Close")
+                                .positiveText("Add to watchlist")
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .negativeColor(getResources().getColor(R.color.md_red_700))
+                                .show();
+                    }
+
+                });
+                
                 if(pDialog.isShowing())
                     pDialog.dismiss();
 
