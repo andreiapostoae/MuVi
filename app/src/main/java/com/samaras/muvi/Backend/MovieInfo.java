@@ -1,5 +1,7 @@
 package com.samaras.muvi.Backend;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 
 /**
@@ -7,31 +9,38 @@ import java.util.ArrayList;
  */
 
 public class MovieInfo {
-    String title;
-    String description;
-    ArrayList<Integer> genres;
-    double popularityScore;
-    double rating;
-    String posterPath;
-    int id;
-    String releaseDate;
+    public String title;
+    public String description;
+    public String genres;
+    public String rating;
+    public Bitmap bitmap;
 
-    public MovieInfo(int id, String title, String description, double popularityScore, double rating, String posterPath, String releaseDate) {
-        this.id = id;
-        this.posterPath = posterPath;
-        this.popularityScore = popularityScore;
+    public boolean equals(Object o) {
+        return (o instanceof MovieInfo) && (((MovieInfo)o).getTitle()).equals(this.title);
+    }
+
+    public int hashCode() {
+        return title.hashCode();
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public MovieInfo(String title, String description, String rating, String genres, Bitmap bitmap) {
+        this.genres = genres;
         this.rating = rating;
         this.title = title;
         this.description = description;
-        //this.genres = genres;
-        this.releaseDate = releaseDate;
+        this.bitmap = bitmap;
     }
+
 
     public void printMovie() {
         System.out.println("------------------------");
         System.out.println("title: " + title);
         System.out.println("description: " + description);
-        //System.out.println("genres: " + genres);
         System.out.println("rating: " + rating);
     }
 
