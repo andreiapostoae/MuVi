@@ -47,22 +47,23 @@
             android:inputType="textPersonName"
             android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="parent"
-            tools:layout_editor_absoluteY="68dp" />
+            tools:layout_editor_absoluteY="143dp"
+            android:layout_marginStart="77dp" />
     </android.support.constraint.ConstraintLayout>
 
     <TextView
+        android:id="@+id/categoryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"
-        android:textStyle="bold"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/categoryTitle"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
-        android:textSize="30sp"
+        android:text="Title"
         android:textColor="@color/md_black_1000"
-        app:layout_constraintHorizontal_bias="0.501" />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/list"
@@ -79,6 +80,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categoryTitle"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp" />
 
 </android.support.constraint.ConstraintLayout>

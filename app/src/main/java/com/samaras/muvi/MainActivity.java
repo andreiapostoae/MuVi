@@ -3,8 +3,10 @@ package com.samaras.muvi;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -14,6 +16,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,6 +25,7 @@ import android.widget.AdapterView;
 
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -97,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
         movieInfos = new ArrayList<>();
 
         lv = (ListView) findViewById(R.id.list);
-
         tv = (TextView)findViewById(R.id.categoryTitle);
         searchbox = (ConstraintLayout) findViewById(R.id.searchbox);
         searchButton = (Button) findViewById(R.id.searchButton);
@@ -293,8 +297,16 @@ public class MainActivity extends AppCompatActivity {
                 .withIcon(GoogleMaterial.Icon.gmd_list)
                 .withIcon(GoogleMaterial.Icon.gmd_arrow_drop_down);
 
-        PrimaryDrawerItem settingsItem = new PrimaryDrawerItem().withIdentifier(8).withName("Settings ¯\\_(ツ)_/¯")
-                .withIcon(GoogleMaterial.Icon.gmd_settings);
+        PrimaryDrawerItem profileItem = new PrimaryDrawerItem().withIdentifier(8).withName("Profile")
+                .withIcon(GoogleMaterial.Icon.gmd_account_box)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        Intent switchIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivity(switchIntent);
+                        return false;
+                    }
+                });
         PrimaryDrawerItem logoutItem = new PrimaryDrawerItem().withIdentifier(9).withName("Logout")
                 .withIcon(GoogleMaterial.Icon.gmd_exit_to_app)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -308,13 +320,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        System.out.println("email: " + LoginActivity.e_mail);
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withSelectionListEnabledForSingleProfile(false)
                 .withHeaderBackground(R.drawable.header)
                 .addProfiles(
-                        new ProfileDrawerItem().withName("Apo").withEmail(LoginActivity.e_mail).withIcon(getResources().getDrawable(R.drawable.apo))
+                        new ProfileDrawerItem().withName(ProfileActivity.accountName)
+                                .withEmail(ProfileActivity.eMail)
+                                .withIcon(ImageActivity.selectedImage)
                 )
                 .build();
 
@@ -328,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
                         searchItem,
                         wishlistItem,
                         new DividerDrawerItem(),
-                        settingsItem,
+                        profileItem,
                         logoutItem)
                 .withAccountHeader(headerResult)
 
